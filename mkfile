@@ -1,9 +1,12 @@
 </$objtype/mkfile
 
-OBJS = main.$O bbox.$O
+OBJS = main.$O bbox.$O sphere.$O
+HDRS = scene.h
 
 %.$O: %.c
 	$CC $stem.c
+
+%.$O: $HDRS
 
 $O.yar: $OBJS
 	$LD -o $O.yar $OBJS
