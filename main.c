@@ -13,11 +13,12 @@ main(int argc, char **argv)
 	char *NPROC;
 
 	NPROC= getenv("NPROC");
-	if(NPROC != nil)
+	if(NPROC != nil){
 		nproc = atoi(NPROC);
-	else
+		if(nproc < 1)
+			nproc = 1;
+	}else
 		nproc = 1;
-
 
 	ARGBEGIN {
 
