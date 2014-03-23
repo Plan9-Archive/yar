@@ -21,6 +21,16 @@ struct Obj
 	Bbox;
 };
 
+typedef struct Scene Scene;
+struct Scene
+{
+	Obj *objs;
+	Point3 e;
+	Point3 pn, pp;
+	double d;
+	Rectangle r;
+};
+
 extern Bbox boundpt(Bbox b, Point3 pt);
 extern Bbox boundbb(Bbox b, Bbox a);
 
