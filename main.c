@@ -32,11 +32,7 @@ main(int argc, char **argv)
 		int i, j;
 		for(i = 0; i < 240; ++i)
 			for(j = 0; j < 10; ++j)
-				img->data->bdata[
-					img->zero +
-					(i * img->width * sizeof(int)) +
-					((i+j) * img->depth/8)+1
-				] =0xFF;
+				*(byteaddr(img, (Point){i, i+j}) + 1) = 0xFF;
 	}
 
 	writememimage(1, img);
