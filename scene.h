@@ -26,9 +26,10 @@ struct Scene
 {
 	Obj *objs;
 	Point3 e;
-	Point3 pn, pp;
+	Point3 u, v, w;
 	double d;
-	Rectangle r;
+	double l, r, t, b;
+	Point s;
 };
 
 extern Bbox boundpt(Bbox b, Point3 pt);

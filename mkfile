@@ -1,6 +1,6 @@
 </$objtype/mkfile
 
-OBJS = main.$O bbox.$O sphere.$O
+OBJS = main.$O bbox.$O sphere.$O scene.$O
 HDRS = scene.h
 
 %.$O: %.c
