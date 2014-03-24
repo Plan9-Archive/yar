@@ -38,6 +38,16 @@ struct Colour
 	double r, g, b;
 };
 
+typedef struct Hit Hit;
+struct Hit
+{
+	double d;
+	Point3 p;
+	Point3 n;
+	Obj *o;
+	Colour c;
+};
+
 extern Scene *newscene(int w, int h);
 extern Point3 eyeray(Scene *scene, int x, int y);
 
@@ -48,7 +58,7 @@ extern Bbox boundbb(Bbox b, Bbox a);
 
 extern Bbox spherebb(Point3 pos, double r);
 extern Obj *newsphere(Point3 pos, double r);
-extern double spherehit(Obj *sphere, Point3 e, Point3 d);
+extern Hit spherehit(Obj *sphere, Point3 e, Point3 d);
 
 extern Obj *newplane(Point3 p, Point3 n);
-extern double planehit(Obj *plane, Point3 p0, Point3 v);
+extern Hit planehit(Obj *plane, Point3 p0, Point3 v);

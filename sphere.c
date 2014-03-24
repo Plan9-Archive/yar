@@ -43,10 +43,11 @@ newsphere(Point3 pos, double r)
 	return sphere;
 }
 
-double
+Hit
 spherehit(Obj *sphere, Point3 e, Point3 d)
 {
 	Point3 ec;
+	Hit hit;
 	double discrim;
 	double smallterm;
 	double root;
@@ -60,7 +61,7 @@ spherehit(Obj *sphere, Point3 e, Point3 d)
 	discrim = pow(dot3(d, ec), 2) - dd * (dot3(ec, ec) - pow(sphere->r, 2));
 
 	if(discrim < 0)
-		return 0;
+		goto nohit;
 
 	root = sqrt(discrim);
 
@@ -68,5 +69,14 @@ spherehit(Obj *sphere, Point3 e, Point3 d)
 	if(smallterm - root < numerator && smallterm - root > 0)
 		numerator = smallterm - root;
 
-	return numerator / dd;
+	hit.d = numerator / dd;
+	hit.p = add3(e, mul3(d, hit.d));
+	hit.n = mul3(sub3(hit.p, sphere->p), 2);
+	hit.o = sphere;
+	hit.c = (Colour){0, 1, 0};
+
+	return hit;
+nohit:
+	hit.d = 0;
+	return hit;
 }

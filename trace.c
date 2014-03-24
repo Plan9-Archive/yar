@@ -8,41 +8,30 @@
 Colour
 trace(int depth, Obj *obj, Point3 e, Point3 d)
 {
-	Obj *o, *hitobj;
-	double hit, minhit;
+	Obj *o;
+	Hit hit, minhit;
 	int x;
 
 	if(obj == nil)
 		return (Colour){0, 0, 0};
 
-	minhit = -1;
-	hitobj = nil;
+	minhit.d = -1;
 	for(o = obj; o != nil; o = o->next){
 		if(o->type == PLANE)
 			hit = planehit(o, e, d);
 		else if(o->type == SPHERE)
 			hit = spherehit(o, e, d);
 		else
-			hit = -1;
+			hit.d = -1;
 
-		if(hit > 0)
-			if(hit < minhit || minhit < 0){
+		if(hit.d > 0)
+			if(hit.d < minhit.d || minhit.d <= 0){
 				minhit = hit;
-				hitobj = o;
 			}
 	}
 
-	if(hitobj == nil)
+	if(minhit.d <= 0)
 		return (Colour){0, 0, 0};
-		
-	if(hitobj->type == SPHERE)
-		return (Colour){0, 1, 0};
-	else if(hitobj->type == PLANE){
-		x = dist3(hitobj->p, add3(e, mul3(d, minhit))) * 100;
-		if(x % 20 > 10)
-			return (Colour){1, 0, 0};
-		else
-			return (Colour){0, 0, 1};
-	}else
-		return (Colour){0, 0, 0};
+	else
+		return minhit.c;
 }
