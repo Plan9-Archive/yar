@@ -32,6 +32,9 @@ struct Scene
 	Point s;
 };
 
+extern Scene *newscene(int w, int h);
+extern Point3 eyeray(Scene *scene, int x, int y);
+
 extern Bbox boundpt(Bbox b, Point3 pt);
 extern Bbox boundbb(Bbox b, Bbox a);
 
