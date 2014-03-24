@@ -32,6 +32,12 @@ struct Scene
 	Point s;
 };
 
+typedef struct Colour Colour;
+struct Colour
+{
+	double r, g, b;
+};
+
 extern Scene *newscene(int w, int h);
 extern Point3 eyeray(Scene *scene, int x, int y);
 
