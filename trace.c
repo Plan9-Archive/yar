@@ -11,6 +11,9 @@ trace(int depth, Obj *obj, Point3 e, Point3 d)
 	double t;
 	int x;
 
+	if(obj == nil)
+		return (Colour){0, 0, 0};
+
 	if(obj->type != PLANE)
 		return (Colour){0, 0, 0};
 

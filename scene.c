@@ -1,6 +1,7 @@
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
+#include <memdraw.h>
 #include <geometry.h>
 
 #include "scene.h"
@@ -43,4 +44,26 @@ eyeray(Scene *scene, int x, int y)
 	ray = add3(ray, mul3(scene->v, v));
 
 	return ray;
+}
+
+Memimage *
+render(Scene *scene)
+{
+	Memimage *img;
+	Colour c;
+	int i, j;
+	uchar *px;
+
+	img = allocmemimage(Rpt(Pt(0, 0), scene->s), RGB24);
+
+	for(j = 0; j < scene->s.y; ++j)
+		for(i = 0; i < scene->s.x; ++i){
+			c = trace(0, scene->objs, scene->e, eyeray(scene, i, j));
+			px = byteaddr(img, (Point){i, j});
+			px[0] = c.b * 255;
+			px[1] = c.g * 255;
+			px[2] = c.r * 255;
+		}
+
+	return img;
 }

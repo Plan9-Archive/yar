@@ -41,6 +41,8 @@ struct Colour
 extern Scene *newscene(int w, int h);
 extern Point3 eyeray(Scene *scene, int x, int y);
 
+extern Colour trace(int depth, Obj *obj, Point3 e, Point3 d);
+
 extern Bbox boundpt(Bbox b, Point3 pt);
 extern Bbox boundbb(Bbox b, Bbox a);
 

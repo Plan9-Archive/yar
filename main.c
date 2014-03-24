@@ -2,6 +2,11 @@
 #include <libc.h>
 #include <draw.h>
 #include <memdraw.h>
+#include <geometry.h>
+
+#include "scene.h"
+
+extern Memimage *render(Scene *scene);
 
 int nnodes, node, nproc;
 
@@ -24,17 +29,7 @@ main(int argc, char **argv)
 
 	} ARGEND
 
-	/* RGB24 is actually laid out B, G, R, B, G, R, ... */
-	img = allocmemimage(Rect(0, 0, 320, 240), RGB24);
-	memfillcolor(img, DBlack);
-
-	{
-		int i, j;
-		for(i = 0; i < 240; ++i)
-			for(j = 0; j < 10; ++j)
-				*(byteaddr(img, (Point){i, i+j}) + 1) = 0xFF;
-	}
-
+	img = render(newscene(320, 240));
 	writememimage(1, img);
 
 	exits("");
