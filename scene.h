@@ -37,3 +37,5 @@ extern Bbox boundbb(Bbox b, Bbox a);
 
 extern Bbox spherebb(Point3 pos, double r);
 extern Obj *newsphere(Point3 pos, double r);
+
+extern double planehit(Obj *plane, Point3 p0, Point3 v);
