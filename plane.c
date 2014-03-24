@@ -5,6 +5,24 @@
 
 #include "scene.h"
 
+Obj *
+newplane(point p, point n)
+{
+	Obj *plane;
+
+	plane = malloc(sizeof(Obj));
+	if(plane == nil)
+		exits("malloc");
+
+	plane->type = PLANE;
+	plane->p = p;
+	plane->n = n;
+	plane->next = nil;
+	plane->chld = nil;
+
+	return plane;
+}
+
 double
 planehit(Obj *plane, Point3 p0, Point3 v)
 {
