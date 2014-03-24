@@ -26,7 +26,7 @@ newplane(Point3 p, Point3 n)
 double
 planehit(Obj *plane, Point3 p0, Point3 v)
 {
-	double denom;
+	double denom, intersect;
 	Point3 dist;
 
 	denom = dot3(v, plane->n);
@@ -34,5 +34,10 @@ planehit(Obj *plane, Point3 p0, Point3 v)
 		return 0;
 
 	dist = sub3(plane->p, p0);
-	return dot3(dist, plane->n)/denom;
+	intersect = dot3(dist, plane->n)/denom;
+
+	if(intersect > 0)
+		return intersect;
+	else
+		return 0;
 }
