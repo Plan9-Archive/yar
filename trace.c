@@ -10,7 +10,7 @@ trace(int depth, Obj *obj, Point3 e, Point3 d)
 {
 	Obj *o;
 	Hit hit, minhit;
-	int x;
+	double c;
 
 	if(obj == nil)
 		return (Colour){0, 0, 0};
@@ -32,6 +32,11 @@ trace(int depth, Obj *obj, Point3 e, Point3 d)
 
 	if(minhit.d <= 0)
 		return (Colour){0, 0, 0};
-	else
-		return minhit.c;
+
+	c = 1-(dot3(d, minhit.n)/(len3(d) * len3(minhit.n)));
+	return (Colour){
+		minhit.c.r * c,
+		minhit.c.g * c,
+		minhit.c.b * c
+	};
 }
