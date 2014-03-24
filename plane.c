@@ -6,7 +6,7 @@
 #include "scene.h"
 
 Obj *
-newplane(point p, point n)
+newplane(Point3 p, Point3 n)
 {
 	Obj *plane;
 
