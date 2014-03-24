@@ -15,7 +15,7 @@ newscene(int w, int h)
 	if(scene == nil)
 		exits("malloc");
 
-	scene->objs = nil;
+	scene->objs = newplane((Point3){0, -1, 0, 0}, (Point3){0, 1, 0, 0});
 	scene->e = (Point3){0, 0, 1, 0};
 	scene->u = (Point3){1, 0, 0, 0};
 	scene->v = (Point3){0, 1, 0, 0};
