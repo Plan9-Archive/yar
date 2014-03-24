@@ -21,7 +21,7 @@ newscene(int w, int h)
 	scene->objs->next = o;
 	scene->e = (Point3){0, 0, 1, 0};
 	scene->u = (Point3){1, 0, 0, 0};
-	scene->v = (Point3){0, 1, 0, 0};
+	scene->v = (Point3){0, -1, 0, 0};
 	scene->w = (Point3){0, 0, 1, 0};
 	scene->d = 1.0;
 	scene->l = -1;
