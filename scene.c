@@ -10,12 +10,15 @@ Scene *
 newscene(int w, int h)
 {
 	Scene *scene;
+	Obj *o;
 
 	scene = malloc(sizeof(Scene));
 	if(scene == nil)
 		exits("malloc");
 
 	scene->objs = newplane((Point3){0, -1, 0, 0}, (Point3){0, 1, 0, 0});
+	o = newsphere((Point3){0, 1, -1, 0}, 0.5);
+	scene->objs->next = o;
 	scene->e = (Point3){0, 0, 1, 0};
 	scene->u = (Point3){1, 0, 0, 0};
 	scene->v = (Point3){0, 1, 0, 0};
