@@ -3,6 +3,7 @@ enum type
 	PLANE,
 	SPHERE,
 	AGGR,
+	LIGHT,
 };
 
 typedef struct Bbox Bbox;
@@ -11,12 +12,19 @@ struct Bbox
 	Point3 min, max;
 };
 
+typedef struct Colour Colour;
+struct Colour
+{
+	double r, g, b;
+};
+
 typedef struct Obj Obj;
 struct Obj
 {
 	enum type type;
 	Point3 p, n;
 	double r;
+	Colour c;
 	Obj *next, *chld;
 	Bbox;
 };
@@ -30,12 +38,6 @@ struct Scene
 	double d;
 	double l, r, t, b;
 	Point s;
-};
-
-typedef struct Colour Colour;
-struct Colour
-{
-	double r, g, b;
 };
 
 typedef struct Hit Hit;
@@ -62,3 +64,6 @@ extern Hit spherehit(Obj *sphere, Point3 e, Point3 d);
 
 extern Obj *newplane(Point3 p, Point3 n);
 extern Hit planehit(Obj *plane, Point3 p0, Point3 v);
+
+extern Obj *newlight(Point3 p, double r, Point3 n, Colour c);
+extern Hit lighthit(Obj *light, Point3 e, Point3 d);
