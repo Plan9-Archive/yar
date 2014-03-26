@@ -22,6 +22,8 @@ newscene(int w, int h)
 	o->next = newsphere((Point3){1.5, 0, -2, 0}, 0.5);
 	o = o->next;
 	o->next = newsphere((Point3){-2, 2, -3, 0}, 1);
+	o = o->next;
+	o->next = newlight((Point3){3, 3, 0, 0}, 1, (Point3){-3, -3, -1, 0}, (Colour){1, 1, 1});
 	scene->e = (Point3){0, 0, 1, 0};
 	scene->u = (Point3){1, 0, 0, 0};
 	scene->v = (Point3){0, -1, 0, 0};

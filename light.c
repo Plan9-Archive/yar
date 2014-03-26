@@ -14,6 +14,7 @@ newlight(Point3 p, double r, Point3 n, Colour c)
 	if(light == nil)
 		exits("malloc");
 
+	light->type = LIGHT;
 	light->p = p;
 	light->r = r;
 	light->n = n;
