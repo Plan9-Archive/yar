@@ -29,7 +29,7 @@ main(int argc, char **argv)
 
 	} ARGEND
 
-	img = render(newscene(320, 240));
+	img = render(newscene(640, 480));
 	writememimage(1, img);
 
 	exits("");
