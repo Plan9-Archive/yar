@@ -32,6 +32,7 @@ struct Obj
 typedef struct Scene Scene;
 struct Scene
 {
+	Memimage *img;
 	Obj *objs;
 	Point3 e;
 	Point3 u, v, w;
@@ -52,6 +53,7 @@ struct Hit
 
 extern Scene *newscene(int w, int h);
 extern Point3 eyeray(Scene *scene, int x, int y);
+extern Memimage *render(Scene *scene);
 
 extern Colour trace(int depth, Obj *obj, Point3 e, Point3 d);
 

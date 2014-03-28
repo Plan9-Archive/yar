@@ -16,6 +16,10 @@ newscene(int w, int h)
 	if(scene == nil)
 		exits("malloc");
 
+	scene->img = allocmemimage(Rect(0, 0, w, h), RGB24);
+	if(scene->img == nil)
+		exits("malloc");
+
 	scene->objs = newplane((Point3){0, -1, 0, 0}, (Point3){0, 1, 0, 0});
 	o = newsphere((Point3){0, 0, -1, 0}, 0.25);
 	scene->objs->next = o;
@@ -57,21 +61,18 @@ eyeray(Scene *scene, int x, int y)
 Memimage *
 render(Scene *scene)
 {
-	Memimage *img;
 	Colour c;
 	int i, j;
 	uchar *px;
 
-	img = allocmemimage(Rpt(Pt(0, 0), scene->s), RGB24);
-
 	for(j = 0; j < scene->s.y; ++j)
 		for(i = 0; i < scene->s.x; ++i){
 			c = trace(0, scene->objs, scene->e, eyeray(scene, i, j));
-			px = byteaddr(img, (Point){i, j});
+			px = byteaddr(scene->img, (Point){i, j});
 			px[0] = c.b * 255;
 			px[1] = c.g * 255;
 			px[2] = c.r * 255;
 		}
 
-	return img;
+	return scene->img;
 }
