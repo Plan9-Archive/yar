@@ -59,13 +59,15 @@ eyeray(Scene *scene, int x, int y)
 }
 
 Memimage *
-render(Scene *scene)
+render(Scene *scene, int id)
 {
 	Colour c;
 	int i, j;
 	uchar *px;
 
-	for(j = 0; j < scene->s.y; ++j)
+	for(j = 0; j < scene->s.y; ++j){
+		if((j % nproc) != id)
+			continue;
 		for(i = 0; i < scene->s.x; ++i){
 			c = trace(0, scene->objs, scene->e, eyeray(scene, i, j));
 			px = byteaddr(scene->img, (Point){i, j});
@@ -73,6 +75,7 @@ render(Scene *scene)
 			px[1] = c.g * 255;
 			px[2] = c.r * 255;
 		}
+	}
 
 	return scene->img;
 }

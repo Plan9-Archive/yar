@@ -1,21 +1,32 @@
 #include <u.h>
 #include <libc.h>
+#include <thread.h>
 #include <draw.h>
 #include <memdraw.h>
 #include <geometry.h>
 
 #include "scene.h"
 
-extern Memimage *render(Scene *scene);
-
 int nnodes, node, nproc;
 
-Memimage *img;
+Scene *scene;
+Channel *c;
 
 void
-main(int argc, char **argv)
+thread(void *arg)
+{
+	int id;
+
+	id = (int)arg;
+	render(scene, id);
+	sendul(c, id);
+}
+
+void
+threadmain(int argc, char **argv)
 {
 	char *NPROC;
+	int i;
 
 	NPROC= getenv("NPROC");
 	if(NPROC != nil){
@@ -29,8 +40,15 @@ main(int argc, char **argv)
 
 	} ARGEND
 
-	img = render(newscene(640, 480));
-	writememimage(1, img);
+	scene = newscene(640, 480);
+	c = chancreate(sizeof(ulong), 1);
+	for(i = 0; i < nproc; ++i)
+		proccreate(thread, (void *)i, 8192*1024);
+
+	for(i = 0; i < nproc; ++i)
+		recvul(c);
+
+	writememimage(1, scene->img);
 
 	exits("");
 }

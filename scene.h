@@ -1,3 +1,5 @@
+extern int nnodes, node, nproc;
+
 enum type
 {
 	PLANE,
@@ -53,7 +55,7 @@ struct Hit
 
 extern Scene *newscene(int w, int h);
 extern Point3 eyeray(Scene *scene, int x, int y);
-extern Memimage *render(Scene *scene);
+extern Memimage *render(Scene *scene, int id);
 
 extern Colour trace(int depth, Obj *obj, Point3 e, Point3 d);
 
