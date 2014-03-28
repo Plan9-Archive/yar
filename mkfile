@@ -11,8 +11,10 @@ HDRS = scene.h
 $O.yar: $OBJS
 	$LD -o $O.yar $OBJS
 
-show:V: $O.yar
-	window $O.yar ^'|page'
+show:V: what.png
+
+what.png: $O.yar
+	$O.yar | topng > what.png
 
 clean:V:
 	rm *.$O $O.*
