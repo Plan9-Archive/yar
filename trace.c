@@ -7,12 +7,36 @@
 #include "scene.h"
 
 Colour
+tracelight(int depth, Obj *obj, Hit pos, Point3 e, Point3 d)
+{
+	double c;
+
+	c = 1 - (dot3(d, pos.n) / (len3(d) *len3(pos.n)));
+
+	return (Colour){
+		pos.c.r * c,
+		pos.c.g * c,
+		pos.c.b *c
+	};
+}
+
+Colour
+tracerefl(int depth, Obj *obj, Hit pos, Point3 e, Point3 d)
+{
+	Point3 peps, refldir;
+
+	peps = add3(pos.p, mul3(pos.n, 0.01));
+	refldir = sub3(d, mul3(pos.n, 2*dot3(d, pos.n)));
+
+	return trace(depth, obj, peps, refldir);
+}
+
+Colour
 trace(int depth, Obj *obj, Point3 e, Point3 d)
 {
 	Obj *o;
 	Hit hit, minhit;
-	double c;
-	Colour c2;
+	Colour c1, c2;
 
 	if(depth > 2)
 		return (Colour){0, 0, 0};
@@ -38,12 +62,13 @@ trace(int depth, Obj *obj, Point3 e, Point3 d)
 	if(minhit.d <= 0)
 		return (Colour){0, 0, 0};
 
-	c2 = trace(depth+1, obj, add3(minhit.p, mul3(minhit.n, 0.01)), sub3(d, mul3(minhit.n, 2*dot3(d, minhit.n))));
+	c1 = tracelight(depth+1, obj, minhit, e, d);
 
-	c = 1-(dot3(d, minhit.n)/(len3(d) * len3(minhit.n)));
+	c2 = tracerefl(depth+1, obj, minhit, e, d);
+
 	return (Colour){
-		(c2.r *0.5) + minhit.c.r * c,
-		(c2.g * 0.5) + minhit.c.g * c,
-		(c2.b * 0.5) + minhit.c.b * c
+		(c2.r *0.5) + c1.r,
+		(c2.g * 0.5) + c1.g, 
+		(c2.b * 0.5) + c1.b
 	};
 }
