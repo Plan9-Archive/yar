@@ -49,6 +49,7 @@ struct Hit
 	double d;
 	Point3 p;
 	Point3 n;
+	Point3 ie, id;
 	Obj *o;
 	Colour c;
 };

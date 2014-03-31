@@ -45,6 +45,8 @@ planehit(Obj *plane, Point3 e, Point3 d)
 	hit.d = intersect;
 	hit.p = add3(e, mul3(d, intersect));
 	hit.n = plane->n;
+	hit.ie = e;
+	hit.id = mul3(d, hit.d);
 	hit.o = plane;
 
 	x = dist3(plane->p, hit.p) * 100;

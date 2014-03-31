@@ -73,6 +73,8 @@ spherehit(Obj *sphere, Point3 e, Point3 d)
 	hit.d = numerator / dd;
 	hit.p = add3(e, mul3(d, hit.d));
 	hit.n = mul3(sub3(hit.p, sphere->p), 2);
+	hit.ie = e;
+	hit.id = mul3(d, hit.d);
 	hit.o = sphere;
 	hit.c = (Colour){0, 1, 0};
 

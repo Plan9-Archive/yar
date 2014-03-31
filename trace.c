@@ -7,11 +7,11 @@
 #include "scene.h"
 
 Colour
-tracelight(int depth, Obj *obj, Hit pos, Point3 e, Point3 d)
+tracelight(int depth, Obj *obj, Hit pos)
 {
 	double c;
 
-	c = 1 - (dot3(d, pos.n) / (len3(d) *len3(pos.n)));
+	c = 1 - (dot3(pos.id, pos.n) / (len3(pos.id) *len3(pos.n)));
 
 	return (Colour){
 		pos.c.r * c,
@@ -21,12 +21,12 @@ tracelight(int depth, Obj *obj, Hit pos, Point3 e, Point3 d)
 }
 
 Colour
-tracerefl(int depth, Obj *obj, Hit pos, Point3 e, Point3 d)
+tracerefl(int depth, Obj *obj, Hit pos)
 {
 	Point3 peps, refldir;
 
 	peps = add3(pos.p, mul3(pos.n, 0.01));
-	refldir = sub3(d, mul3(pos.n, 2*dot3(d, pos.n)));
+	refldir = sub3(pos.id, mul3(pos.n, 2*dot3(pos.id, pos.n)));
 
 	return trace(depth, obj, peps, refldir);
 }
@@ -62,9 +62,9 @@ trace(int depth, Obj *obj, Point3 e, Point3 d)
 	if(minhit.d <= 0)
 		return (Colour){0, 0, 0};
 
-	c1 = tracelight(depth+1, obj, minhit, e, d);
+	c1 = tracelight(depth+1, obj, minhit);
 
-	c2 = tracerefl(depth+1, obj, minhit, e, d);
+	c2 = tracerefl(depth+1, obj, minhit);
 
 	return (Colour){
 		(c2.r *0.5) + c1.r,
