@@ -6,22 +6,58 @@
 
 #include "scene.h"
 
+Hit
+traceshadow(int depth, Obj *obj, Hit pos, Hit light)
+{
+	Obj *o;
+	Hit hit, minhit;
+
+	minhit.d = 0;
+	minhit.o = nil;
+	for(o = obj; o != nil; o = o->next){
+		if(o == pos.o)
+			continue;
+		switch(o->type){
+		case SPHERE:
+			hit = spherehit(o, pos.p, unit3(light.id));
+			break;
+		case PLANE:
+			hit = planehit(o, pos.p, unit3(light.id));
+			break;
+		case LIGHT:
+			hit = lighthit(o, pos.p, unit3(light.id));
+			break;
+		default:
+			hit.d = 0;
+			break;
+		}
+		if(minhit.d == 0 || (hit.d > 0 && hit.d < minhit.d))
+			minhit = hit;
+	}
+
+	return minhit;
+}
+
 Colour
 tracelight(int depth, Obj *obj, Hit pos)
 {
 	Obj *o;
-	Hit hit;
-	double c;
+	Hit hit, shadow;
+	double c, ct;
 
 	c = 0;
 	for(o = obj; o != nil; o = o->next){
 		if(o->type != LIGHT)
 			continue;
 		hit = lighthit(o, pos.p, sub3(o->p, pos.p));
+		shadow = traceshadow(depth+1, obj, pos, hit);
+		if(shadow.d == 0 || shadow.o != hit.o)
+			continue;
 
-		c += dot3(unit3(hit.id), unit3(pos.n));
-		if(c < 0)
-			c = 0;
+		ct = dot3(unit3(hit.id), unit3(pos.n));
+		if(ct < 0)
+			ct = 0;
+		c += ct;
 	}
 
 	return (Colour){
