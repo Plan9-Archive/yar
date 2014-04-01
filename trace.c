@@ -9,9 +9,20 @@
 Colour
 tracelight(int depth, Obj *obj, Hit pos)
 {
+	Obj *o;
+	Hit hit;
 	double c;
 
-	c = 1 - (dot3(pos.id, pos.n) / (len3(pos.id) *len3(pos.n)));
+	c = 0;
+	for(o = obj; o != nil; o = o->next){
+		if(o->type != LIGHT)
+			continue;
+		hit = lighthit(o, pos.p, sub3(o->p, pos.p));
+
+		c += dot3(unit3(hit.id), unit3(pos.n));
+		if(c < 0)
+			c = 0;
+	}
 
 	return (Colour){
 		pos.c.r * c,
@@ -38,7 +49,7 @@ trace(int depth, Obj *obj, Point3 e, Point3 d)
 	Hit hit, minhit;
 	Colour c1, c2;
 
-	if(depth > 2)
+	if(depth > 8)
 		return (Colour){0, 0, 0};
 
 	if(obj == nil)
