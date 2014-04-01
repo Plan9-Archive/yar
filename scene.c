@@ -21,7 +21,7 @@ newscene(int w, int h)
 		exits("malloc");
 
 	scene->objs = newplane((Point3){0, -1, 0, 0}, (Point3){0, 1, 0, 0});
-	o = newsphere((Point3){0, 0, -1, 0}, 0.25);
+	o = newsphere((Point3){0, -0.5, -1, 0}, 0.5);
 	scene->objs->next = o;
 	o->next = newsphere((Point3){1.5, 0, -2, 0}, 0.5);
 	o = o->next;
