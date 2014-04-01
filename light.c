@@ -44,6 +44,8 @@ lighthit(Obj *light, Point3 e, Point3 d)
 	hit.d = intersect;
 	hit.p = add3(e, mul3(d, intersect));
 	hit.n = light->n;
+	hit .ie = e;
+	hit.id = mul3(d, hit.d);
 	hit.o = light;
 	hit.c = light->c;
 
