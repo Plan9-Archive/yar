@@ -51,9 +51,9 @@ planehit(Obj *plane, Point3 e, Point3 d)
 
 	x = dist3(plane->p, hit.p) * 100;
 	if(x % 20 > 10)
-		hit.c = (Colour){1, 0, 0};
+		hit.c = (Colour){0.75, 0.5, 0.25};
 	else
-		hit.c = (Colour){0, 0, 1};
+		hit.c = (Colour){0.25, 0.5, 0.75};
 
 	return hit;
 nohit:
