@@ -72,3 +72,7 @@ extern Hit planehit(Obj *plane, Point3 p0, Point3 v);
 
 extern Obj *newlight(Point3 p, double r, Point3 n, Colour c);
 extern Hit lighthit(Obj *light, Point3 e, Point3 d);
+
+extern Colour csum(Colour a, Colour b);
+extern Colour cscale(Colour a, double b);
+extern Colour cmul(Colour a, Colour b);
