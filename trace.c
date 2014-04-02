@@ -60,11 +60,11 @@ tracelight(int depth, Obj *obj, Hit pos)
 {
 	Obj *o;
 	Hit hit, shadow;
-	Colour bp, bpt;
-	double c, ct;
+	Colour bp, bpt, c;
+	double ct;
 
 	bp = (Colour){0, 0, 0};
-	c = 0;
+	c = (Colour){0, 0, 0};
 	for(o = obj; o != nil; o = o->next){
 		if(o->type != LIGHT)
 			continue;
@@ -77,11 +77,11 @@ tracelight(int depth, Obj *obj, Hit pos)
 		bpt = blinnphong(pos, hit);
 		if(ct < 0)
 			ct = 0;
-		c += ct;
+		c = csum(c, cscale(hit.c, ct));
 		bp = csum(bp, bpt);
 	}
 
-	return csum(cscale(pos.c, c), bp);
+	return csum(cmul(pos.c, c), bp);
 }
 
 Colour
