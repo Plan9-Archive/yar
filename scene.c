@@ -58,6 +58,14 @@ eyeray(Scene *scene, int x, int y)
 	return ray;
 }
 
+double
+clamp(double x)
+{
+	if(x > 1) return 1;
+	if(x < 0) return 0;
+	return x;
+}
+
 Memimage *
 render(Scene *scene, int id)
 {
@@ -71,9 +79,9 @@ render(Scene *scene, int id)
 		for(i = 0; i < scene->s.x; ++i){
 			c = trace(0, scene->objs, scene->e, eyeray(scene, i, j));
 			px = byteaddr(scene->img, (Point){i, j});
-			px[0] = c.b * 255;
-			px[1] = c.g * 255;
-			px[2] = c.r * 255;
+			px[0] = clamp(c.b) * 255;
+			px[1] = clamp(c.g) * 255;
+			px[2] = clamp(c.r) * 255;
 		}
 	}
 
