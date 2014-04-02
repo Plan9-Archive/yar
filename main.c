@@ -40,7 +40,7 @@ threadmain(int argc, char **argv)
 
 	} ARGEND
 
-	scene = newscene(640, 480);
+	scene = newscene(1024, 768);
 	c = chancreate(sizeof(ulong), 1);
 	for(i = 0; i < nproc; ++i)
 		proccreate(thread, (void *)i, 8192*1024);
