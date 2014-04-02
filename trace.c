@@ -39,12 +39,35 @@ traceshadow(int depth, Obj *obj, Hit pos, Hit light)
 }
 
 Colour
+blinnphong(Hit pos, Hit light)
+{
+	Point3 h;
+	double specdot, bp;
+
+	h = unit3(add3(neg3(unit3(pos.id)), unit3(light.id)));
+
+	specdot = dot3(unit3(pos.n), h);
+	if(specdot < 0)
+		specdot = 0;
+
+	bp = pow(specdot, 99);
+
+	return (Colour){
+		light.c.r * bp,
+		light.c.g * bp,
+		light.c.b * bp
+	};
+}
+
+Colour
 tracelight(int depth, Obj *obj, Hit pos)
 {
 	Obj *o;
 	Hit hit, shadow;
+	Colour bp, bpt;
 	double c, ct;
 
+	bp = (Colour){0, 0, 0};
 	c = 0;
 	for(o = obj; o != nil; o = o->next){
 		if(o->type != LIGHT)
@@ -55,15 +78,19 @@ tracelight(int depth, Obj *obj, Hit pos)
 			continue;
 
 		ct = dot3(unit3(hit.id), unit3(pos.n));
+		bpt = blinnphong(pos, hit);
 		if(ct < 0)
 			ct = 0;
 		c += ct;
+		bp.r += bpt.r;
+		bp.g += bpt.g;
+		bp.b += bpt.b;
 	}
 
 	return (Colour){
-		pos.c.r * c,
-		pos.c.g * c,
-		pos.c.b *c
+		pos.c.r * c + bp.r,
+		pos.c.g * c + bp.g,
+		pos.c.b *c + bp.b
 	};
 }
 
