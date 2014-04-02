@@ -52,11 +52,7 @@ blinnphong(Hit pos, Hit light)
 
 	bp = pow(specdot, 99);
 
-	return (Colour){
-		light.c.r * bp,
-		light.c.g * bp,
-		light.c.b * bp
-	};
+	return cscale(light.c, bp);
 }
 
 Colour
@@ -82,16 +78,10 @@ tracelight(int depth, Obj *obj, Hit pos)
 		if(ct < 0)
 			ct = 0;
 		c += ct;
-		bp.r += bpt.r;
-		bp.g += bpt.g;
-		bp.b += bpt.b;
+		bp = csum(bp, bpt);
 	}
 
-	return (Colour){
-		pos.c.r * c + bp.r,
-		pos.c.g * c + bp.g,
-		pos.c.b *c + bp.b
-	};
+	return csum(cscale(pos.c, c), bp);
 }
 
 Colour
@@ -140,9 +130,5 @@ trace(int depth, Obj *obj, Point3 e, Point3 d)
 
 	c2 = tracerefl(depth+1, obj, minhit);
 
-	return (Colour){
-		(c2.r *0.5) + c1.r,
-		(c2.g * 0.5) + c1.g, 
-		(c2.b * 0.5) + c1.b
-	};
+	return csum(cscale(c2, 0.5), c1);
 }
