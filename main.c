@@ -9,6 +9,7 @@
 
 int nnodes, node, nproc;
 int nsamples;
+int maxdepth;
 
 Scene *scene;
 Channel *c;
@@ -24,9 +25,16 @@ thread(void *arg)
 }
 
 void
+usage(char *s)
+{
+	fprint(2, "%s [-d maxdepth] [-s samples]\n", s);
+	exits("usage");
+}
+
+void
 threadmain(int argc, char **argv)
 {
-	char *NPROC;
+	char *NPROC, *s;
 	int i;
 
 	NPROC= getenv("NPROC");
@@ -37,11 +45,25 @@ threadmain(int argc, char **argv)
 	}else
 		nproc = 1;
 
-	ARGBEGIN {
-
-	} ARGEND
-
 	nsamples = 4;
+	maxdepth = 16;
+
+	ARGBEGIN {
+	case 'd':
+		s = EARGF(usage(argv0));
+		maxdepth = atoi(s);
+		if(maxdepth < 1)
+			maxdepth = 1;
+		break;
+	case 's':
+		s = EARGF(usage(argv0));
+		nsamples = atoi(s);
+		if(nsamples < 1)
+			nsamples = 1;
+		break;
+	default:
+		usage(argv0);
+	} ARGEND
 
 	srand(time(0));
 

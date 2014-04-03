@@ -102,7 +102,7 @@ trace(int depth, Obj *obj, Point3 e, Point3 d)
 	Hit hit, minhit;
 	Colour c1, c2;
 
-	if(depth > 16)
+	if(depth > maxdepth)
 		return (Colour){0, 0, 0};
 
 	if(obj == nil)

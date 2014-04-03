@@ -1,5 +1,6 @@
 extern int nnodes, node, nproc;
 extern int nsamples;
+extern int maxdepth;
 
 enum type
 {
