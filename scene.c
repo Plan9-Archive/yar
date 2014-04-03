@@ -6,8 +6,66 @@
 
 #include "scene.h"
 
+Obj *
+scene0(void)
+{
+	Obj *objs, *o;
+
+	objs = newplane((Point3){0, -1, 0, 0}, (Point3){0, 1, 0, 0});
+	o = newsphere((Point3){0, -0.5, -1, 0}, 0.5);
+	objs->next = o;
+	o->next = newsphere((Point3){1.5, 0, -2, 0}, 0.5);
+	o = o->next;
+	o->next = newsphere((Point3){-2, 2, -3, 0}, 1);
+	o = o->next;
+	o->next = newlight((Point3){3, 3, 0, 0}, 1, (Point3){-3, -3, -1, 0}, (Colour){0.40, 0.6, 0.6});
+	o = o->next;
+	o->next = newlight((Point3){-2, 4, 2, 0}, 1, (Point3){1, -3, -1, 0}, (Colour){0.4, 0.3, 0.40});
+	o = o->next;
+	o->next = newlight((Point3){-4, 6, -10, 0}, 1, (Point3){2, -4, 1, 0}, (Colour){0.5, 0.7, 0.4});
+
+	return objs;
+}
+
+Obj *
+scene1(void)
+{
+	Obj *objs, *o;
+
+	objs = newplane((Point3){0, -1, 0, 0}, (Point3){0, 1, 0, 0});
+	o = newplane((Point3){-5, 0, 0, 0}, (Point3){1, 0, 0, 0});
+	objs->next = o;
+	o->next = newsphere((Point3){-3, 3, -5, 0}, 0.75);
+	o = o->next;
+	o->next = newlight((Point3){-2, 10, -5, 0}, 1, (Point3){0.5, -2, 1, 0}, (Colour){0.6, 0.8, 0.8});
+	o = o->next;
+	o->next = newlight((Point3){2, 10, 5, 0}, 1, (Point3){-0.5, -1, -1, 0}, (Colour){0.8, 0.8, 0.6});
+	o = o->next;
+	o->next = newsphere((Point3){1, 0.5, -6, 0}, 4);
+
+	return objs;
+}
+
+Obj *scene2(void)
+{
+	Obj *objs, *o;
+	int i;
+
+	objs = newplane((Point3){0, -1, -2, 0}, (Point3){0, 1, 0, 0});
+	objs->next = newlight((Point3){3, 3, 3, 0}, 1, (Point3){-3, -3, -3, 0}, (Colour){0.8, 0.7, 0.8});
+	o = objs->next;
+	o->next = newlight((Point3){-3, 3, 3, 0}, 1, (Point3){3, -3, -3, 0}, (Colour){0.9, 0.9, 0.7});
+	o = o->next;
+	for(i = 0; i < 10; ++i){
+		o->next = newsphere((Point3){i-3, 1, -5+((double)i/2.0), 0}, 0.5);
+		o = o->next;
+	}
+
+	return objs;
+}
+
 Scene *
-newscene(int w, int h)
+newscene(int scnid, int w, int h)
 {
 	Scene *scene;
 	Obj *o;
@@ -20,18 +78,13 @@ newscene(int w, int h)
 	if(scene->img == nil)
 		exits("malloc");
 
-	scene->objs = newplane((Point3){0, -1, 0, 0}, (Point3){0, 1, 0, 0});
-	o = newsphere((Point3){0, -0.5, -1, 0}, 0.5);
-	scene->objs->next = o;
-	o->next = newsphere((Point3){1.5, 0, -2, 0}, 0.5);
-	o = o->next;
-	o->next = newsphere((Point3){-2, 2, -3, 0}, 1);
-	o = o->next;
-	o->next = newlight((Point3){3, 3, 0, 0}, 1, (Point3){-3, -3, -1, 0}, (Colour){0.40, 0.6, 0.6});
-	o = o->next;
-	o->next = newlight((Point3){-2, 4, 2, 0}, 1, (Point3){1, -3, -1, 0}, (Colour){0.4, 0.3, 0.40});
-	o = o->next;
-	o->next = newlight((Point3){-4, 6, -10, 0}, 1, (Point3){2, -4, 1, 0}, (Colour){0.5, 0.7, 0.4});
+	if(scnid == 1)
+		scene->objs = scene1();
+	else if(scnid == 2)
+		scene->objs = scene2();
+	else
+		scene->objs = scene0();
+
 	scene->e = (Point3){0, 0, 1, 0};
 	scene->u = (Point3){1, 0, 0, 0};
 	scene->v = (Point3){0, -1, 0, 0};

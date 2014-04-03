@@ -56,7 +56,7 @@ struct Hit
 	Colour c;
 };
 
-extern Scene *newscene(int w, int h);
+extern Scene *newscene(int scnid, int w, int h);
 extern Point3 eyeray(Scene *scene, int x, int y);
 extern Memimage *render(Scene *scene, int id);
 

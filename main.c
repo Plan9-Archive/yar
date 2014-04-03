@@ -27,7 +27,7 @@ thread(void *arg)
 void
 usage(char *s)
 {
-	fprint(2, "%s [-d maxdepth] [-s samples] [-x xres] [-y yres]\n", s);
+	fprint(2, "%s [-c scnid] [-d maxdepth] [-s samples] [-x xres] [-y yres]\n", s);
 	exits("usage");
 }
 
@@ -36,6 +36,7 @@ threadmain(int argc, char **argv)
 {
 	char *NPROC, *s;
 	int xres, yres;
+	int scnid;
 	int i;
 
 	NPROC= getenv("NPROC");
@@ -50,8 +51,13 @@ threadmain(int argc, char **argv)
 	maxdepth = 16;
 	xres = 1024;
 	yres = 768;
+	scnid = 1;
 
 	ARGBEGIN {
+	case 'c':
+		s = EARGF(usage(argv0));
+		scnid = atoi(s);
+		break;
 	case 'd':
 		s = EARGF(usage(argv0));
 		maxdepth = atoi(s);
@@ -82,7 +88,7 @@ threadmain(int argc, char **argv)
 
 	srand(time(0));
 
-	scene = newscene(xres, yres);
+	scene = newscene(scnid, xres, yres);
 	c = chancreate(sizeof(ulong), 1);
 	for(i = 0; i < nproc; ++i)
 		proccreate(thread, (void *)i, 8192*1024);
