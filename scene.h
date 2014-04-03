@@ -1,4 +1,5 @@
 extern int nnodes, node, nproc;
+extern int nsamples;
 
 enum type
 {

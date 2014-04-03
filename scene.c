@@ -55,6 +55,11 @@ eyeray(Scene *scene, int x, int y)
 	u = scene->l + (scene->r - scene->l) * ((double)x + 0.5) / (double)scene->s.x;
 	v = scene->b + (scene->t - scene->b) * ((double)y + 0.5) / (double)scene->s.y;
 
+	if(nsamples > 1){
+		u += (0.5 - frand()) / 100.0;
+		v += (0.5 - frand()) / 100.0;
+	}
+
 	ray = mul3(scene->w, -scene->d);
 	ray = add3(ray, mul3(scene->u, u));
 	ray = add3(ray, mul3(scene->v, v));
@@ -74,7 +79,7 @@ Memimage *
 render(Scene *scene, int id)
 {
 	Colour c;
-	int i, j;
+	int i, j, s;
 	uchar *px;
 
 	for(j = 0; j < scene->s.y; ++j){
@@ -82,6 +87,10 @@ render(Scene *scene, int id)
 			continue;
 		for(i = 0; i < scene->s.x; ++i){
 			c = trace(0, scene->objs, scene->e, eyeray(scene, i, j));
+			for(s = 1; s < nsamples; ++s){
+				c = csum(c, trace(0, scene->objs, scene->e, eyeray(scene, i, j)));
+			}
+			c = cscale(c, 1.0/(double)nsamples);
 			px = byteaddr(scene->img, (Point){i, j});
 			px[0] = clamp(c.b) * 255;
 			px[1] = clamp(c.g) * 255;

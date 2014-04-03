@@ -8,6 +8,7 @@
 #include "scene.h"
 
 int nnodes, node, nproc;
+int nsamples;
 
 Scene *scene;
 Channel *c;
@@ -39,6 +40,10 @@ threadmain(int argc, char **argv)
 	ARGBEGIN {
 
 	} ARGEND
+
+	nsamples = 4;
+
+	srand(time(0));
 
 	scene = newscene(1024, 768);
 	c = chancreate(sizeof(ulong), 1);
