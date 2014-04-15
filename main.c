@@ -91,7 +91,7 @@ threadmain(int argc, char **argv)
 	scene = newscene(scnid, xres, yres);
 	c = chancreate(sizeof(ulong), 1);
 	for(i = 0; i < nproc; ++i)
-		proccreate(thread, (void *)i, 8192*1024);
+		proccreate(thread, (void *)i, 16384*1024);
 
 	for(i = 0; i < nproc; ++i)
 		recvul(c);
