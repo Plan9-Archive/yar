@@ -1,7 +1,7 @@
 </$objtype/mkfile
 
 OBJS = main.$O bbox.$O sphere.$O scene.$O plane.$O trace.$O light.$O colour.$O
-HDRS = scene.h
+HDRS = scene.h pipes.h
 
 %.$O: %.c
 	$CC $stem.c
