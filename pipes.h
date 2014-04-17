@@ -21,3 +21,5 @@ struct Hitresp
 	Hit;
 	Channel *oc;
 };
+
+extern Hitpipe *mkobjpipe(Obj *o);
