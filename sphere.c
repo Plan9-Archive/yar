@@ -1,10 +1,12 @@
 #include <u.h>
 #include <libc.h>
+#include <thread.h>
 #include <draw.h>
 #include <memdraw.h>
 #include <geometry.h>
 
 #include "scene.h"
+#include "pipes.h"
 
 Bbox
 spherebb(Point3 pos, double r)
@@ -42,6 +44,15 @@ newsphere(Point3 pos, double r)
 	sphere->Bbox = spherebb(pos, r);
 
 	return sphere;
+}
+
+Hitpipe *
+mkspherepipe(Point3 pos, double r)
+{
+	Obj *sphere;
+
+	sphere = newsphere(pos, r);
+	return mkobjpipe(sphere);
 }
 
 Hit

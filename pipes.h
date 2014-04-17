@@ -23,3 +23,7 @@ struct Hitresp
 };
 
 extern Hitpipe *mkobjpipe(Obj *o);
+
+extern Hitpipe *mkspherepipe(Point3 pos, double r);
+extern Hitpipe *mkplanepipe(Point3 p, Point3 n);
+extern Hitpipe *mklightpipe(Point3 p, double r, Point3 n, Colour c);

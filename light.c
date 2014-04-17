@@ -1,10 +1,12 @@
 #include <u.h>
 #include <libc.h>
+#include <thread.h>
 #include <draw.h>
 #include <memdraw.h>
 #include <geometry.h>
 
 #include "scene.h"
+#include "pipes.h"
 
 Obj *
 newlight(Point3 p, double r, Point3 n, Colour c)
@@ -22,6 +24,15 @@ newlight(Point3 p, double r, Point3 n, Colour c)
 	light->c = c;
 
 	return light;
+}
+
+Hitpipe *
+mklightpipe(Point3 p, double r, Point3 n, Colour c)
+{
+	Obj *light;
+
+	light = newlight(p, r, n, c);
+	return mkobjpipe(light);
 }
 
 Hit

@@ -1,10 +1,12 @@
 #include <u.h>
 #include <libc.h>
+#include <thread.h>
 #include <draw.h>
 #include <memdraw.h>
 #include <geometry.h>
 
 #include "scene.h"
+#include "pipes.h"
 
 Obj *
 newplane(Point3 p, Point3 n)
@@ -22,6 +24,15 @@ newplane(Point3 p, Point3 n)
 	plane->chld = nil;
 
 	return plane;
+}
+
+Hitpipe *
+mkplanepipe(Point3 p, Point3 n)
+{
+	Obj *plane;
+
+	plane = newplane(p, n);
+	return mkobjpipe(plane);
 }
 
 Hit
