@@ -47,12 +47,12 @@ newsphere(Point3 pos, double r)
 }
 
 Hitpipe *
-mkspherepipe(Point3 pos, double r)
+mkspherepipe(int id, Point3 pos, double r)
 {
 	Obj *sphere;
 
 	sphere = newsphere(pos, r);
-	return mkobjpipe(sphere);
+	return mkobjpipe(id, sphere);
 }
 
 Hit

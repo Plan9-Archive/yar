@@ -11,12 +11,13 @@
 typedef struct Pipeargs Pipeargs;
 struct Pipeargs
 {
+	int id;
 	Obj *o;
 	Channel *creq;
 };
 
 void
-objthread(void *arg)
+objproc(void *arg)
 {
 	Pipeargs *pipe;
 	Obj *o;
@@ -29,7 +30,7 @@ objthread(void *arg)
 }
 
 Hitpipe *
-mkobjpipe(Obj *o)
+mkobjpipe(int id, Obj *o)
 {
 	Hitpipe *pipe;
 	Pipeargs *pa;
@@ -43,12 +44,14 @@ mkobjpipe(Obj *o)
 		sysfatal("malloc: %r");
 
 	pipe->type = o->type;
-	pipe->c = chancreate(sizeof(Hitreq), 8);
+	pipe->id = id;
+	pipe->req = chancreate(sizeof(Hitreq), 8);
 	pipe->next = nil;
 
+	pa->id = id;
 	pa->o = o;
-	pa->creq = pipe->c;
-	proccreate(objthread, pa, 8192*1024);
+	pa->creq = pipe->req;
+	proccreate(objproc, pa, 8192*1024);
 
 	return pipe;
 }

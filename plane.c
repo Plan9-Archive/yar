@@ -27,12 +27,12 @@ newplane(Point3 p, Point3 n)
 }
 
 Hitpipe *
-mkplanepipe(Point3 p, Point3 n)
+mkplanepipe(int id, Point3 p, Point3 n)
 {
 	Obj *plane;
 
 	plane = newplane(p, n);
-	return mkobjpipe(plane);
+	return mkobjpipe(id, plane);
 }
 
 Hit

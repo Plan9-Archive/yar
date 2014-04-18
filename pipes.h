@@ -2,7 +2,8 @@ typedef struct Hitpipe Hitpipe;
 struct Hitpipe
 {
 	enum type type;
-	Channel *c;
+	int id;
+	Channel *req;
 	Hitpipe *next;
 };
 
@@ -12,7 +13,7 @@ struct Hitreq
 	int depth;
 	Point3 e;
 	Point3 d;
-	Channel *c;
+	Channel *resp;
 };
 
 typedef struct Hitresp Hitresp;
@@ -22,8 +23,8 @@ struct Hitresp
 	Channel *oc;
 };
 
-extern Hitpipe *mkobjpipe(Obj *o);
+extern Hitpipe *mkobjpipe(int id, Obj *o);
 
-extern Hitpipe *mkspherepipe(Point3 pos, double r);
-extern Hitpipe *mkplanepipe(Point3 p, Point3 n);
-extern Hitpipe *mklightpipe(Point3 p, double r, Point3 n, Colour c);
+extern Hitpipe *mkspherepipe(int id, Point3 pos, double r);
+extern Hitpipe *mkplanepipe(int id, Point3 p, Point3 n);
+extern Hitpipe *mklightpipe(int id, Point3 p, double r, Point3 n, Colour c);

@@ -27,12 +27,12 @@ newlight(Point3 p, double r, Point3 n, Colour c)
 }
 
 Hitpipe *
-mklightpipe(Point3 p, double r, Point3 n, Colour c)
+mklightpipe(int id, Point3 p, double r, Point3 n, Colour c)
 {
 	Obj *light;
 
 	light = newlight(p, r, n, c);
-	return mkobjpipe(light);
+	return mkobjpipe(id, light);
 }
 
 Hit
