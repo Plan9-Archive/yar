@@ -55,3 +55,13 @@ mkobjpipe(int id, Obj *o)
 
 	return pipe;
 }
+
+Hitpipe *
+conspipe(Hitpipe *car, Hitpipe *cdr)
+{
+	if(car == nil)
+		return cdr;
+
+	car->next = cdr;
+	return car;
+}

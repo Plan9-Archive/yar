@@ -1,10 +1,12 @@
 #include <u.h>
 #include <libc.h>
+#include <thread.h>
 #include <draw.h>
 #include <memdraw.h>
 #include <geometry.h>
 
 #include "scene.h"
+#include "pipes.h"
 
 Obj *
 scene0(void)
@@ -82,6 +84,8 @@ newscene(int scnid, int w, int h)
 		scene->objs = scene1();
 	else if(scnid == 2)
 		scene->objs = scene2();
+	else if(scnid == 3)
+		scene->objs = nil;
 	else
 		scene->objs = scene0();
 
@@ -97,6 +101,21 @@ newscene(int scnid, int w, int h)
 	scene->s = (Point){w, h};
 
 	return scene;
+}
+
+Pipescene *
+pipescene(int w, int h)
+{
+	Pipescene *psc;
+
+	psc = malloc(sizeof(Pipescene));
+	if(psc == nil)
+		sysfatal("malloc: %r");
+
+	psc->scene = newscene(3, w, h);
+	psc->pipes = nil;
+
+	return psc;
 }
 
 Point3
