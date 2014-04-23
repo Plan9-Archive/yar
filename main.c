@@ -11,19 +11,6 @@ int nnodes, node, nproc;
 int nsamples;
 int maxdepth;
 
-Scene *scene;
-Channel *c;
-
-void
-thread(void *arg)
-{
-	int id;
-
-	id = (int)arg;
-	render(scene, id);
-	sendul(c, id);
-}
-
 void
 usage(char *s)
 {
@@ -35,18 +22,12 @@ void
 threadmain(int argc, char **argv)
 {
 	char *NPROC, *s;
+	Scene *scene;
 	int xres, yres;
 	int scnid;
 	int i;
 
-	NPROC= getenv("NPROC");
-	if(NPROC != nil){
-		nproc = atoi(NPROC);
-		if(nproc < 1)
-			nproc = 1;
-	}else
-		nproc = 1;
-
+	nproc = 1;
 	nsamples = 4;
 	maxdepth = 16;
 	xres = 1024;
@@ -89,13 +70,7 @@ threadmain(int argc, char **argv)
 	srand(time(0));
 
 	scene = newscene(scnid, xres, yres);
-	c = chancreate(sizeof(ulong), 1);
-	for(i = 0; i < nproc; ++i)
-		proccreate(thread, (void *)i, 16384*1024);
-
-	for(i = 0; i < nproc; ++i)
-		recvul(c);
-
+	render(scene, 0);
 	writememimage(1, scene->img);
 
 	exits("");
