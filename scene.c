@@ -107,13 +107,25 @@ Pipescene *
 pipescene(int w, int h)
 {
 	Pipescene *psc;
+	int id;
 
 	psc = malloc(sizeof(Pipescene));
 	if(psc == nil)
 		sysfatal("malloc: %r");
 
+	id = 1;
+
 	psc->scene = newscene(3, w, h);
-	psc->pipes = nil;
+	psc->pipes = conspipe(mkplanepipe(id++, (Point3){0, -1, 0, 0}, (Point3){0, 1, 0, 0}), nil);
+	psc->pipes = conspipe(mkspherepipe(id++, (Point3){0, -0.5, -1, 0}, 0.5), psc->pipes);
+	psc->pipes = conspipe(mkspherepipe(id++, (Point3){1.5, 0, -2, 0}, 0.5), psc->pipes);
+	psc->pipes = conspipe(mkspherepipe(id++, (Point3){-2, 2, -3, 0}, 1), psc->pipes);
+	psc->pipes = conspipe(mklightpipe(id++, (Point3){3, 3, 0, 0}, 1, (Point3){-3, -3, -1, 0},
+		(Colour){0.40, 0.6, 0.6}), psc->pipes);
+	psc->pipes = conspipe(mklightpipe(id++, (Point3){-2, 4, 2, 0}, 1, (Point3){1, -3, -1, 0},
+		(Colour){0.4, 0.3, 0.40}), psc->pipes);
+	psc->pipes = conspipe(mklightpipe(id++, (Point3){-4, 6, -10, 0}, 1, (Point3){2, -4, 1, 0},
+		(Colour){0.5, 0.7, 0.4}), psc->pipes);
 
 	return psc;
 }
