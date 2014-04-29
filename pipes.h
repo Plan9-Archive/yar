@@ -14,6 +14,7 @@ struct Hitreq
 	Point3 e;
 	Point3 d;
 	Channel *resp;
+	Channel *tag;
 };
 
 typedef struct Hitresp Hitresp;

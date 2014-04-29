@@ -1,10 +1,12 @@
 #include <u.h>
 #include <libc.h>
+#include <thread.h>
 #include <draw.h>
 #include <memdraw.h>
 #include <geometry.h>
 
 #include "scene.h"
+#include "pipes.h"
 
 Hit
 traceshadow(int depth, Obj *obj, Hit pos, Hit light)
@@ -131,4 +133,37 @@ trace(int depth, Obj *obj, Point3 e, Point3 d)
 	c2 = tracerefl(depth+1, obj, minhit);
 
 	return csum(cscale(c2, 0.5), c1);
+}
+
+Hitresp
+tracepipe(int depth, Hitpipe *pipes, Point3 e, Point3 d)
+{
+	Hitresp hit, minhit;
+	Hitreq req;
+	int npipes;
+
+	if(depth < 1){
+		minhit.d = -1;
+		return minhit;
+	}
+
+	req.depth = depth;
+	req.e = e;
+	req.d = d;
+	req.resp = chancreate(sizeof(Hitresp), 0);
+
+	for(npipes = 0; pipes != nil; pipes = pipes->next){
+		npipes += 1;
+		req.tag = pipes->req;
+		send(pipes->req, &req);
+	}
+
+	while(npipes-- > 0){
+		recv(req.resp, &hit);
+
+		if(minhit.d <= 0 || (hit.d < minhit.d && hit.d > 0))
+			minhit = hit;
+	}
+
+	return minhit;
 }
