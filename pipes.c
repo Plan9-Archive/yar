@@ -16,17 +16,62 @@ struct Pipeargs
 	Channel *creq;
 };
 
+typedef struct Threadargs Threadargs;
+struct Threadargs
+{
+	Hitreq;
+	Obj *o;
+};
+
+void
+objthread(void *arg)
+{
+	Threadargs *req;
+	Hitresp hit;
+
+	req = arg;
+	hit.oc = req->tag;
+
+	switch(req->o->type){
+	case PLANE:
+		hit.Hit = planehit(req->o, req->e, req->d);
+		break;
+	case SPHERE:
+		hit.Hit = spherehit(req->o, req->e, req->d);
+		break;
+	case LIGHT:
+		hit.Hit = lighthit(req->o, req->e, req->d);
+		break;
+	default:
+		hit.d = -1;
+		break;
+	}
+
+	send(req->resp, &hit);
+	free(req);
+}
+
 void
 objproc(void *arg)
 {
 	Pipeargs *pipe;
 	Obj *o;
 	Channel *creq, *cresp;
+	Threadargs *req;
 
 	pipe = (Pipeargs *)arg;
 	o = pipe->o;
 	creq = pipe->creq;
 	cresp = chancreate(sizeof(Hitresp), 8);
+
+	for(;;){
+		req = malloc(sizeof(Threadargs));
+		recv(creq, req);
+		if(req->depth < 1)
+			objthread(req);
+		else
+			threadcreate(objthread, req, 1024 * 128);
+	}
 }
 
 Hitpipe *
