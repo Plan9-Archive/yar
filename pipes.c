@@ -56,13 +56,12 @@ objproc(void *arg)
 {
 	Pipeargs *pipe;
 	Obj *o;
-	Channel *creq, *cresp;
+	Channel *creq;
 	Threadargs *req;
 
 	pipe = (Pipeargs *)arg;
 	o = pipe->o;
 	creq = pipe->creq;
-	cresp = chancreate(sizeof(Hitresp), 8);
 
 	for(;;){
 		req = malloc(sizeof(Threadargs));
