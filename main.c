@@ -6,6 +6,7 @@
 #include <geometry.h>
 
 #include "scene.h"
+#include "pipes.h"
 
 int nnodes, node, nproc;
 int nsamples;
@@ -22,7 +23,7 @@ void
 threadmain(int argc, char **argv)
 {
 	char *NPROC, *s;
-	Scene *scene;
+	Pipescene *ps;
 	int xres, yres;
 	int scnid;
 	int i;
@@ -69,9 +70,9 @@ threadmain(int argc, char **argv)
 
 	srand(time(0));
 
-	scene = newscene(scnid, xres, yres);
-	render(scene, 0);
-	writememimage(1, scene->img);
+	ps = pipescene(xres, yres);
+	piperender(ps);
+	writememimage(1, ps->scene->img);
 
 	exits("");
 }
