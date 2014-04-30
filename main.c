@@ -12,6 +12,8 @@ int nnodes, node, nproc;
 int nsamples;
 int maxdepth;
 
+int mainstacksize = 1024 * 8192;
+
 void
 usage(char *s)
 {
@@ -74,5 +76,5 @@ threadmain(int argc, char **argv)
 	piperender(ps);
 	writememimage(1, ps->scene->img);
 
-	exits("");
+	threadexitsall("");
 }
