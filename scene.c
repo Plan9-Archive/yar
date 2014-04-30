@@ -184,3 +184,23 @@ render(Scene *scene, int id)
 
 	return scene->img;
 }
+
+Memimage *
+piperender(Pipescene *ps)
+{
+	Colour c;
+	int i, j;
+	uchar *px;
+
+	for(j = 0; j < ps->scene->s.y; ++j){
+		for(i = 0; i < ps->scene->s.x; ++i){
+			c = tracepipe(maxdepth, ps->pipes, ps->scene->e, eyeray(ps->scene, i, j)).c;
+			px = byteaddr(ps->scene->img, (Point){i, j});
+			px[0] = clamp(c.b) * 255;
+			px[1] = clamp(c.g) * 255;
+			px[2] = clamp(c.r) * 255;
+		}
+	}
+
+	return ps->scene->img;
+}

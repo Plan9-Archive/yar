@@ -39,5 +39,6 @@ extern Hitpipe *mkplanepipe(int id, Point3 p, Point3 n);
 extern Hitpipe *mklightpipe(int id, Point3 p, double r, Point3 n, Colour c);
 
 extern Pipescene *pipescene(int w, int h);
+extern Memimage *piperender(Pipescene *ps);
 
 extern Hitresp tracepipe(int depth, Hitpipe *pipes, Point3 e, Point3 d);
