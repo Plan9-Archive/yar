@@ -165,5 +165,6 @@ tracepipe(int depth, Hitpipe *pipes, Point3 e, Point3 d)
 			minhit = hit;
 	}
 
+	chanfree(req.resp);
 	return minhit;
 }
