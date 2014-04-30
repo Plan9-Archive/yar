@@ -108,5 +108,10 @@ conspipe(Hitpipe *car, Hitpipe *cdr)
 		return cdr;
 
 	car->next = cdr;
+	if(cdr == nil)
+		car->id = 0;
+	else
+		car->id = cdr->id + 1;
+
 	return car;
 }
