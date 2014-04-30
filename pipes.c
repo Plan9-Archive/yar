@@ -66,7 +66,8 @@ objproc(void *arg)
 
 	for(;;){
 		req = malloc(sizeof(Threadargs));
-		recv(creq, req);
+		recv(creq, &req->Hitreq);
+		req->o = o;
 		if(req->depth < 1)
 			objthread(req);
 		else
